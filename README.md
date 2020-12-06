@@ -6,7 +6,7 @@ Coding challenges for everyday of December up to December 25th
 
 ---
 
-## Day 1:
+## Day 1: Report Repair
 
 #### Part 1:  
 ```
