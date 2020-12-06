@@ -30,5 +30,7 @@ ANSWER: 165026160 (390 + 324 + 1306)
 
 #### Part 1:  
 ```
-
+Use "passwords.csv"
+How many passwords are valid according to their policies?
+ANSWER: 
 ```

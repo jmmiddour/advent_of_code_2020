@@ -1,0 +1,97 @@
+############### Password Philosophy ###############
+
+# Each line gives the password policy and then the password. 
+# The password policy indicates the lowest and highest number of times 
+#   a given letter must appear for the password to be valid. 
+# For example, 1-3 a means that the password must contain "a" 
+#   at least 1 time and at most 3 times.
+# To try to debug the problem, they have created a list (your puzzle input) 
+#   of passwords (according to the corrupted database) and the 
+#   corporate policy when that password was set.
+
+# How many passwords are valid according to their policies?
+
+import pandas as pd
+
+# Create a variable to hold data from list.txt
+pws = pd.read_csv('passwords.csv')
+
+# Look at the passwords to verify it loaded correctly
+# print(pws)
+
+# Split the columm pol_num into 2 columns for start and end
+pws[['start', 'end']] = pws.pol_num.str.split('-', expand=True)
+
+# Type values in start and end as an integers
+pws['start'] = pd.to_numeric(pws['start'])
+pws['end'] = pd.to_numeric(pws['end'])
+
+# Look at the new passwords to verify it split correctly
+# print(pws)
+
+
+# Reorder the columns with only the columns I need now
+pws = pws[['start', 'end', 'char', 'password']]
+
+# Look at the new passwords to verify it is ordered correctly
+# print(pws.dtypes)
+
+# Create a new column for character count
+for i in pws['char']:
+    for j in pws['password']:
+        if i in j:
+            pws['char_cnt'] = pws[j].count(i).sum()
+
+print(pws)
+
+
+# Iterate through the passwords to compare them to the policy
+# counter = 0
+#  and pws['start'] <= j.count(i).sum() >= pws['end']:
+#             counter += 1
+
+# print(f'Number of valid passwords: {counter}')
+
+###############################################################
+
+The code above is what I had before revertiing my changes back 
+to where I started with trying to iterate through the passwords
+to get the count of the valid passwords.
+
+The above code is giving me the following error and can not debug:
+
+```
+(base) C:\Users\sahmj\Documents\Projects\advent_of_code_2020\day2>C:/Users/sahmj/anaconda3/python.exe c:/Users/sahmj/Documents/Projects/advent_of_code_2020/day2/day2.py
+Traceback (most recent call last):
+  File "C:\Users\sahmj\anaconda3\lib\site-packages\pandas\core\indexes\base.py", line 2646, in get_loc
+    return self._engine.get_loc(key)
+  File "pandas\_libs\index.pyx", line 111, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\index.pyx", line 138, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\hashtable_class_helper.pxi", line 1619, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas\_libs\hashtable_class_helper.pxi", line 1627, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'qllllqllklhlvtl'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:/Users/sahmj/Documents/Projects/advent_of_code_2020/day2/day2.py", line 43, in <module>
+    pws['char_cnt'] = pws[j].count(i).sum()
+  File "C:\Users\sahmj\anaconda3\lib\site-packages\pandas\core\frame.py", line 2800, in __getitem__        
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\sahmj\anaconda3\lib\site-packages\pandas\core\indexes\base.py", line 2648, in get_loc     
+    return self._engine.get_loc(self._maybe_cast_indexer(key))
+  File "pandas\_libs\index.pyx", line 111, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\index.pyx", line 138, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\hashtable_class_helper.pxi", line 1619, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas\_libs\hashtable_class_helper.pxi", line 1627, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'qllllqllklhlvtl'
+```
+
+Need to spend time on Lambda content and try again later.
+
+At one point I did have working code that gave me a count of 620 valid 
+passwords but when I submitted that I was told it was too high.
+Unfortunately, I did not save that code before trying to debug why it was
+not giving me the correct value.
+
+Then I tried to submit the opposite of 380 and was told that was too low.
